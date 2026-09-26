@@ -1,0 +1,54 @@
+﻿<Page x:Class="MadTRPO15.Pages.AddTagsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MadTRPO15.Pages"
+      mc:Ignorable="d" 
+      xmlns:conv="clr-namespace:MadTRPO15.Validation"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      DataContext="{Binding RelativeSource={RelativeSource self}}"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Редактирование тегов">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <!--название-->
+            <StackPanel>
+                <Label>Название Тэга</Label>
+                <TextBox x:Name="NameTB"
+md:HintAssist.Hint="Введите название категории">
+
+
+                    <TextBox.Text >
+                        <Binding Path="_Tag.Name" UpdateSourceTrigger="LostFocus"
+         >
+                            <Binding.ValidationRules>
+                                <conv:EmptyV/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <ItemsControl Foreground="Red"
+ FontSize="12"
+ ItemsSource="{Binding ElementName=NameTB, Path=(Validation.Errors)}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ErrorContent}" TextWrapping="wrap"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </StackPanel>
+            <TextBox Text="{Binding _Tag.Name, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Сохранить"
+            Click="Button_Click"/>
+            <Button Content="Назад"
+            Click="Button_Click_1"/>
+        </StackPanel>
+
+    </Grid>
+</Page>

@@ -1,0 +1,236 @@
+﻿<Page x:Class="MadTRPO15.Pages.AddProductPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MadTRPO15.Pages"
+      mc:Ignorable="d" 
+      xmlns:conv="clr-namespace:MadTRPO15.Validation"
+      DataContext="{Binding RelativeSource={RelativeSource self}}"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Редактирование техники">
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>c:\users\anton\desktop\madtrpo15\madtrpo15\pages\addproductpage.xaml.cs
+c:\users\anton\desktop\madtrpo15\madtrpo15\pages\addproductpage.xaml
+
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+
+<!--название-->
+            <StackPanel>
+                <Label>Название товара</Label>
+                <TextBox x:Name="NameTB"
+             md:HintAssist.Hint="Введите название товара">
+
+
+                    <TextBox.Text >
+                        <Binding Path="Prod.Name" UpdateSourceTrigger="LostFocus"
+                      >
+                            <Binding.ValidationRules>
+                                <conv:EmptyV/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <ItemsControl Foreground="Red"
+              FontSize="12"
+              ItemsSource="{Binding ElementName=NameTB, Path=(Validation.Errors)}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ErrorContent}" TextWrapping="wrap"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </StackPanel>
+            
+            
+<!--//цена-->
+            <StackPanel>
+                <Label>Цена</Label>
+                <TextBox x:Name="PriceTB"
+                         md:HintAssist.Hint="Введите цену товара">
+
+
+                    <TextBox.Text >
+                        <Binding Path="Prod.Price" UpdateSourceTrigger="LostFocus"
+                                  >
+                            <Binding.ValidationRules>
+                                <conv:PriceV/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <ItemsControl Foreground="Red"
+                          FontSize="12"
+                          ItemsSource="{Binding ElementName=PriceTB, Path=(Validation.Errors)}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ErrorContent}" TextWrapping="wrap"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </StackPanel>
+
+<!--описание-->
+            <StackPanel>
+                <Label>Описание</Label>
+                <TextBox x:Name="DescTB"
+  md:HintAssist.Hint="Введите описание товара">
+
+
+                    <TextBox.Text >
+                        <Binding Path="Prod.Description" UpdateSourceTrigger="LostFocus"
+           >
+                            <Binding.ValidationRules>
+                                <conv:EmptyV/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <ItemsControl Foreground="Red"
+   FontSize="12"
+   ItemsSource="{Binding ElementName=DescTB, Path=(Validation.Errors)}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ErrorContent}" TextWrapping="wrap"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </StackPanel>
+
+<!--остаток-->
+            <StackPanel>
+                <Label>Остаток</Label>
+                <TextBox x:Name="StockTB"
+             md:HintAssist.Hint="Введите остаток товара">
+
+
+                    <TextBox.Text >
+                        <Binding Path="Prod.Stock" UpdateSourceTrigger="LostFocus"
+                      >
+                            <Binding.ValidationRules>
+                                <conv:StockV/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <ItemsControl Foreground="Red"
+              FontSize="12"
+              ItemsSource="{Binding ElementName=StockTB, Path=(Validation.Errors)}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ErrorContent}" TextWrapping="wrap"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </StackPanel>
+
+
+<!--дата-->
+            <StackPanel>
+                <Label>дата создания</Label>
+                <DatePicker Name="DpCreatedDate"
+                            SelectedDate="{Binding SelectedDate}"/>
+                
+            </StackPanel>
+
+            
+            <!--категория-->
+            <StackPanel>
+                <Label>Категория</Label>
+
+                <ComboBox Name="categorycb"
+                          DisplayMemberPath="Name"
+                           SelectedValuePath="Id"
+                          
+                           md:HintAssist.Hint="Выберите категорию"
+                           Margin="10">
+                    <ComboBox.SelectedValue>
+                        <Binding Path="Prod.CategoryId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <conv:CBV/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedValue>
+                </ComboBox>
+                <ItemsControl Foreground="Red"
+                                FontSize="12"
+                                ItemsSource="{Binding ElementName=categorycb, Path=(Validation.Errors)}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ErrorContent}" TextWrapping="wrap"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+
+
+            </StackPanel>
+
+
+<!--бренд-->
+            <StackPanel>
+                <Label>Бренд</Label>
+
+                <ComboBox Name="brandcb"
+              DisplayMemberPath="Name"
+               SelectedValuePath="Id"
+              
+               md:HintAssist.Hint="Выберите бренд"
+               Margin="10">
+                    <ComboBox.SelectedValue>
+                        <Binding Path="Prod.BrandId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <conv:CBV/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedValue>
+                </ComboBox>
+                <ItemsControl Foreground="Red"
+                    FontSize="12"
+                    ItemsSource="{Binding ElementName=brandcb, Path=(Validation.Errors)}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ErrorContent}" TextWrapping="wrap"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+
+
+            </StackPanel>
+           
+
+
+
+            <TextBlock Text="Теги"/>
+            <ListBox Name="List"
+                     SelectionMode="Multiple"
+                     DisplayMemberPath="Name"
+                     SelectedValuePath="Id"
+                     Height="120"
+                     Margin="10"/>
+
+            <Button Content="Сохранить"
+            Width="200"
+                    Margin="10"
+            Click="Button_Click"/>
+            <Button Content="Назад"
+                    Width="200"
+                    Margin="10"
+                    Click="Button_Click_1"
+                    />
+        </StackPanel>
+
+    </Grid>
+</Page>
