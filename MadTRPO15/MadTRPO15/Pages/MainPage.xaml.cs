@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -92,6 +93,8 @@ namespace MadTRPO15.Pages
             ProductsView.Filter = FilterProducts;
             LoadList();
             InitializeComponent();
+            LBBrands.ItemsSource = db.Brands.ToList();
+            LBCategories.ItemsSource = db.Categories.ToList();
             if (admin == false)
             {
                 AdminP.Visibility = Visibility.Collapsed;
@@ -115,16 +118,7 @@ namespace MadTRPO15.Pages
             }
             switch (selected.Tag)
             {
-                case "Category":
-                    ProductsView.SortDescriptions.Add(new SortDescription("Category.Name",
-                    ListSortDirection.Ascending));
-                    SelectionTag = "Category";
-                    break;
-                case "Brand":
-                    ProductsView.SortDescriptions.Add(new SortDescription("Brand.Name",
-                    ListSortDirection.Ascending));
-                    SelectionTag = "Brand";
-                    break;
+                
                 case "CostAsc":
                     ProductsView.SortDescriptions.Add(new SortDescription("Price",
                     ListSortDirection.Ascending));
@@ -151,6 +145,11 @@ namespace MadTRPO15.Pages
             }
             ProductsView.Refresh();
         }
+
+        public ObservableCollection<Category> cs { get; set; } = new();
+        public ObservableCollection<Brand> bs { get; set; } = new();
+       
+        
         public bool FilterProducts(object obj)
         {
             if (obj is not Product)
@@ -159,7 +158,8 @@ namespace MadTRPO15.Pages
             
             if (searchQuery != null && !product.Name.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
                 return false;
-            if(SelectionTag == "Cost")
+
+            if (SelectionTag == "Cost")
             {
                 if (!CostFrom.IsNullOrEmpty() && Convert.ToDouble(CostFrom)
                     > product.Price)
@@ -170,7 +170,27 @@ namespace MadTRPO15.Pages
                     return false;
             }
 
-            
+            if (LBBrands != null && LBBrands.SelectedItems.Count >0)
+            {
+                var sbid = LBBrands.SelectedItems
+                    .Cast<Brand>()
+                    .Select(b => b.Id)
+                    .ToList();
+
+                if (!sbid.Contains((int)product.BrandId))
+                    return false;
+            }
+            if (LBCategories != null && LBCategories.SelectedItems.Count > 0)
+            {
+                var sbid = LBCategories.SelectedItems
+                    .Cast<Category>()
+                    .Select(b => b.Id)
+                    .ToList();
+
+                if (!sbid.Contains((int)product.CategoryId))
+                    return false;
+            }
+
 
             return true;
         }
@@ -215,10 +235,13 @@ namespace MadTRPO15.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            LBBrands.UnselectAll();
+            LBCategories.UnselectAll();
             CostFrom = "";
             CostTo = "";
             CB.SelectedIndex = -1;
             searchQuery = "";
+
 
         }
 
@@ -272,6 +295,11 @@ namespace MadTRPO15.Pages
         }
 
         private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            ProductsView.Refresh();
+        }
+
+        private void LBFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ProductsView.Refresh();
         }

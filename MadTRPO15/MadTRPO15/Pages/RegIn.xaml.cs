@@ -27,7 +27,7 @@ namespace MadTRPO15.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(tb.Text !="1234")
+            if(tb.Password !="1234")
             {
                 MessageBox.Show("Пароль неверный");
                 return;
